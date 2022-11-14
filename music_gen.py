@@ -1,32 +1,48 @@
 import pysynth
 import random
 import numpy as np
+import tools
 class MusicGen:
-    def __init__(self,name,matrix=None,time = 100) -> None:
+    '''
+    使用pysynth生成音乐
+    '''
+    def __init__(self,name,matrix=None,time = 100,dimension = 1) -> None:
+        '''
+        name: 音乐名
+        matrix: 概率转移矩阵
+        time: 音乐时长
+        dimension: 矩阵维度,对应dimension-1阶马尔可夫链
+        '''
         self.name = name
         self.matrix = matrix
-        self.notes = ['c','d','e','f','g','a','b']
-        self.relation = {'c':0,'d':1,'e':2,'f':3,'g':4,'a':5,'b':6}
-        self.octaves = [3,4,5,6]
-        self.durations = ['4','8','16','32']
         self.time = time
+        self.dimension = dimension
     def gen(self):
+        '''
+        生成音乐,保存在name.wav中
+        '''
         if self.matrix is None:
             return 
-        init_note = random.choice(self.notes)
-        init_octave = random.choice(self.octaves)
-        init_duration = random.choice(self.durations)
-        init = (init_note,init_octave,init_duration)
-        music = [init]
-        for i in range(self.time):
-            note = music[i][0]
-            octave = music[i][1]
-            duration = music[i][2]
-            note_index = self.relation[note]
+        init_note = random.choice(tools.notes)
+        init_octave = random.choice(tools.octaves)
+        init_duration = random.choice(tools.durations)
+        init = (init_note+init_octave,init_duration)
+        musics = [init]
+        for i in range(self.time):  
+            note = musics[i][0]
+            octave = note[-1]
+            duration = musics[i][1]
+            note = note[:-1]
+            note_index = tools.relations[note]
             prob = self.matrix[note_index]
-            next_note=np.random.choice(self.notes,p=prob)
+            next_note = np.random.choice(tools.notes,p=prob)
             next_octave = octave
             next_duration = duration
-            music.append((next_note,next_octave,next_duration))
-        pysynth.make_wav(music,fn = self.name+'.wav')
+            if next_note == 'c':
+                next_octave = str(int(octave)+1)
+            elif next_note == 'b':
+                next_octave = str(int(octave)-1)
+            next = (next_note+next_octave,next_duration)
+            musics.append(next)
+        pysynth.make_wav(musics,fn = self.name+'.wav')
 

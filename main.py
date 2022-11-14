@@ -13,7 +13,7 @@ def main():
 
     for song in songs:
         filename = song + '.txt'
-        readmatrix = ReadMatrix(filename)
+        readmatrix = ReadMatrix(filename,dimension=1)
         prob_matrix = readmatrix.read()
         prob_matrix_list.append(prob_matrix)
     
