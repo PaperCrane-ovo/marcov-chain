@@ -31,7 +31,7 @@ class MusicGen:
         init_note = random.choice(tools.notes)
         init_octave = random.choice(tools.octaves)
         init_duration = random.choice(tools.durations)
-        init = (init_note+init_octave,init_duration)
+        init = (init_note+init_octave,int(init_duration))
         musics = [init]
         if self.dimension ==1:
             result = self.gen_with_2d_matrix(musics)
@@ -39,10 +39,9 @@ class MusicGen:
             result = self.gen_with_3d_matrix(musics)
         with open(self.name+'.txt','w') as f:
             for music in result:
-                f.write(music[0]+','+music[1]+';')
+                f.write(str(music[0])+','+str(music[1])+';')
         if self.type == 'music':
             pysynth.make_wav(result,fn = self.name+'.wav')
-        
         '''
 
         pysynth.make_wav(musics,fn = self.name+'.wav')
@@ -56,17 +55,17 @@ class MusicGen:
             note = musics[i][0]
             octave = note[-1]
             duration = musics[i][1]
-            note = note[:-1]
+            note = note[0]
 
             note_index = tools.relations[note]
             prob = self.matrix[note_index]
             next_note = np.random.choice(tools.notes,p=prob)
             next_octave = octave
             next_duration = duration
-            if next_note == 'c':
+            """ if next_note == 'c':
                 next_octave = str(int(octave)+1)
             elif next_note == 'b':
-                next_octave = str(int(octave)-1)
+                next_octave = str(int(octave)-1) """
             next = (next_note+next_octave,next_duration)
             musics.append(next)
         return musics
@@ -89,7 +88,7 @@ class MusicGen:
             second_note = musics[i+1][0]
             second_octave = second_note[-1]
             second_duration = musics[i+1][1]
-            second_note = second_note[:-1]
+            second_note = second_note[0]
             first_index = tools.relations[first_note]
             second_index = tools.relations[second_note]
 
@@ -97,10 +96,10 @@ class MusicGen:
             next_note = np.random.choice(tools.notes,p=prob)
             next_octave = second_octave
             next_duration = second_duration
-            if next_note == 'c':
+            """ if next_note == 'c':
                 next_octave = str(int(second_octave)+1)
             elif next_note == 'b':
-                next_octave = str(int(second_octave)-1)
+                next_octave = str(int(second_octave)-1) """
             next = (next_note+next_octave,next_duration)
             musics.append(next)
         return musics

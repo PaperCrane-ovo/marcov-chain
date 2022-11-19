@@ -19,11 +19,12 @@ def main():
     
     near_matrix, far_matrix = merge_matrix(prob_matrix_list)
 
-    near_music = MusicGen(name = 'near',matrix = near_matrix)
-    far_music = MusicGen(name = 'far',matrix = far_matrix)
+    near_music = MusicGen(name = 'near',matrix = near_matrix,type = 'music')
+    far_music = MusicGen(name = 'far',matrix = far_matrix,type='music')
     
     near_music.gen()
     far_music.gen()
+    print('done')
 if __name__ == "__main__":
     main()
     
