@@ -49,6 +49,9 @@ class MusicGen:
         '''
     
     def gen_with_2d_matrix(self,musics):
+        '''
+        一阶马尔可夫链生成音乐
+        '''
         for i in range(self.time):  
             note = musics[i][0]
             octave = note[-1]
@@ -68,6 +71,9 @@ class MusicGen:
             musics.append(next)
         return musics
     def gen_with_3d_matrix(self,musics):
+        '''
+        二阶马尔科夫链生成音乐,最开始的2个音符采用随机策略
+        '''
         second_note = random.choice(tools.notes)
         second_octave = random.choice(tools.octaves)
         second_duration = random.choice(tools.durations)
