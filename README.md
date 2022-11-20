@@ -1,5 +1,6 @@
 # marcov-chain
 According to a probability_matrix to create music
+
 北京大学2022音乐与数学小组研究课题4:根据马尔科夫链生成随机音乐
 ## To start
 use `pip install -r requirements.txt` to install dependences
