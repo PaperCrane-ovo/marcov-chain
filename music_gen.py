@@ -30,7 +30,8 @@ class MusicGen:
             return 
         init_note = random.choice(tools.notes)
         init_octave = random.choice(tools.octaves)
-        init_duration = random.choice(tools.durations)
+        #init_duration = random.choice(tools.durations)
+        init_duration = 4
         init = (init_note+init_octave,int(init_duration))
         musics = [init]
         if self.dimension ==1:
